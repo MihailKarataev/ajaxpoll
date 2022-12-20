@@ -16,11 +16,12 @@
                     $set = "style='display:none;'";
                 }else
             ?>
+
             <!-- перебираем данные--> 
             <div class="interview__wrapper">
                 <div class="interview__modal__window">
                     <div class="interview__window-title"><?php the_title(); ?></div>
-                    <div class="interview__window-button"<?php echo $set; ?>>
+                    <div id ="interview__button<?php echo $poll_id?>" class="interview__window-button"<?php echo $set; ?>>
                         <?php 
                             while ( have_rows('poll') ) : the_row();
                                 // отображаем вложенные поля
@@ -31,13 +32,15 @@
                             endwhile;
                         ?>
                     </div>
+
                     <?php 
                         $var = "poll_" . $poll_id;
                         if(isset($_COOKIE[$var])){//проверяем проешл ли пользователь опрос и показываем статистику
                             $set = "style='display:block;'";
                         }else
                     ?>
-                    <div class="interview__window-modal" <?php echo $set; ?>>
+
+                    <div id ="interview__statistisc<?php echo $poll_id?>" class="interview__window-modal" <?php echo $set; ?>>
                         <div class="interview__window-statistisc">
                             <?php 
                                 $id_sum= 0;
@@ -81,8 +84,8 @@
             },
             success: function (data) {
 
-                $('.interview__window-button').css("display","none");
-                $('.interview__window-modal').css("display","block");
+                $('#interview__statistisc'+poll_id).css("display","none");
+                $('#interview__statistisc'+poll_id).css("display","block");
                
 
             }
