@@ -1,0 +1,39 @@
+.interview__wrapper {
+    padding: 10px 20px;
+}
+.interview__modal__window {
+    margin: 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.button {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background: #7966a2;
+}
+.button:hover {
+    cursor: pointer;
+    
+}
+
+.interview__window-button {
+    display: inline-flex;
+}
+.interview__window-modal{
+    display: none;
+    width: 100%;
+}
+.interview__window-statistisc {
+    display: inline-flex;
+    width: 100%;
+
+}
+.statistisc__item {
+    height: 30px;
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
