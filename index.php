@@ -12,7 +12,7 @@
             <?php 
                 $set = 0;
                 $var = "poll_" . $poll_id;
-                if(isset($_COOKIE[$var])){
+                if(isset($_COOKIE[$var])){//проверяем прошел ли пользователь опрос и скрываем кнопки
                     $set = "style='display:none;'";
                 }else
             ?>
@@ -33,7 +33,7 @@
                     </div>
                     <?php 
                         $var = "poll_" . $poll_id;
-                        if(isset($_COOKIE[$var])){
+                        if(isset($_COOKIE[$var])){//проверяем проешл ли пользователь опрос и показываем статистику
                             $set = "style='display:block;'";
                         }else
                     ?>
