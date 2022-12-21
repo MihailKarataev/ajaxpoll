@@ -49,26 +49,36 @@
     function synagogues_poll ( WP_REST_Request $request ){//функция принимает и обрабатывает ajax запросы
         $button_id = $request->get_param('button_id');
         $poll_id = $request->get_param('poll_id');
-
         $post = get_field('poll_' . $button_id . '_number', $poll_id);//получаем колличество ответов этого варианта
         $post++;//почему то в функции не складывалось(
+
         update_field('poll_' . $button_id . '_number', $post, $poll_id);//записываем новый ответ
+
         setcookie('poll_'. $poll_id, 'voted', time() + (86400 * 30), "/");
-        return new WP_REST_Response ( poll_write_statistic ($poll_id, $button_id), 200);
+        $change = poll_write_statistic ($poll_id, $button_id);
+        return new WP_REST_Response ( $change, 200);//возвращаем массив измененых данных
     }
 
     function poll_write_statistic ($poll_id, $button_id){// функция записывает статистику в поля
         $total=poll_get_amount($poll_id);
         $arr = get_field('poll', $poll_id, true);
         $button = 0;
-
+        
         foreach ($arr as $key => $value) {
+            if(!isset($value['number'])){
+                $value['number'] = 0;
+            }
             $average = round(($value['number'] / $total) * 100, 1).'%';//получаю среднеарифметическое
             update_field('poll_' . $button . '_percents', $average, $poll_id);//записываю процентное соотношение
+            $settings[] = array(
+                'percents'   => $average,
+                'value'     => $value['variant'],
+                'sum'       => $value['number'],
+            );
             $button++;
         }  
 
-        return $total;
+        return $settings;
     }
     
     function poll_get_amount($poll_id){//функция возвращает общее колличество ответов на ворпос
@@ -77,14 +87,13 @@
 
         foreach ($arr as $key => $value) {
             $total = $total + $value['number'];//почему то $total+$value['number']; не сработал
-            
         }
     
         return $total;
     }
 
-    function poll_get_color($name){//функция создает фон кодируя имя ответа и возвращая первые 6 символов
-        return $backgroundColor = '#' . substr(md5($name), 0, 6);
+    function poll_get_color($param_name, $param_id){//функция создает фон кодируя имя ответа и возвращает первые 6 символов
+        return $backgroundColor = '#' . substr(md5($param_id), 0, 3) . substr(md5($param_name), 0, 3);
     }
 
     add_action('rest_api_init', function(){
@@ -97,8 +106,14 @@
     //ПОДКЛЮЧАЮ СТИЛИ
     add_action( 'wp_enqueue_scripts', 'wp_enqueue_main_style');
     function wp_enqueue_main_style() {
-        wp_enqueue_style( 'wp_enqueue_main_style', get_stylesheet_uri());
+        wp_enqueue_style( 'main_style', get_stylesheet_uri());
     }
+    
+    add_action( 'wp_enqueue_scripts', 'my_scripts_method' );
+    function my_scripts_method(){
+        wp_enqueue_script( 'newscript', get_template_directory_uri() . '/js/js.cookie.min.js');
+    }
+    
 
 
 ?>

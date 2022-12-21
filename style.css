@@ -1,15 +1,20 @@
-.interview__wrapper {
-    padding: 10px 20px;
-}
-.interview__modal__window {
-    margin: 0 0 20px;
+.interview__item {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 12px 10px;
+    margin: 15px 0;
+    box-shadow: 0px 0px 18px -7px rgb(73, 73, 73);
+    border-radius: 8px;
+}
+.interview__window-title{
+    font-size: 25px;
+    color: #464141;
+    margin: 0 0 15px;
 }
 .button {
     margin: 10px;
-    padding: 10px;
+    padding: 10px 20px;
     border-radius: 5px;
     background: #7966a2;
 }
@@ -19,18 +24,25 @@
 .interview__window-button {
     display: inline-flex;
 }
-.interview__window-modal {
+.interview__statistic {
     display: none;
     width: 100%;
 }
-.interview__window-statistisc {
+
+.interview__window-statistic {
     display: inline-flex;
     width: 100%;
 }
-.statistisc__item {
+.statistic__item {
     height: 30px;
     border: 1px solid #000;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.interview__statistic-view:hover {
+    cursor: pointer;
+}
+.interview__statistic-view::after {
+    content: '\142F';
 }
