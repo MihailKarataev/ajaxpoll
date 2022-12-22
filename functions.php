@@ -41,29 +41,58 @@
             'rewrite'             => true,
             'query_var'           => true,
         ] );
+            
+        //мета колличества
+        register_meta( 'poll', 'count', [
+            'object_subtype'    => 'poll', 
+            'show_in_rest'      => true,
+            'sanitize_callback' => 'absint',
+        ] );
+        //мета процента
+        register_meta( 'poll', 'percents', [
+            'object_subtype'    => 'poll',
+            'show_in_rest'      => true,
+            'sanitize_callback' => 'absint',
+        ] );
     
     }
 
 
 
-    function synagogues_poll ( WP_REST_Request $request ){//функция принимает и обрабатывает ajax запросы
-        $button_id = $request->get_param('button_id');
+    function is_empty_count($arr, $poll_id, $button){ //проверяю на наличие и создаю массив колличества
+         if(!isset($arr)){
+             for ($i=0; $i < $poll_id; $i++) { 
+                 $arr []= array($button =>  0);
+             }
+         }
+         return $arr;
+    }
+        
+
+
+
+    function synagogues_poll( WP_REST_Request $request ){//функция принимает и обрабатывает ajax запросы
+        $button = $request->get_param('button_id');
         $poll_id = $request->get_param('poll_id');
-        $post = get_field('poll_' . $button_id . '_number', $poll_id);//получаем колличество ответов этого варианта
-        $post++;//почему то в функции не складывалось(
-
-        update_field('poll_' . $button_id . '_number', $post, $poll_id);//записываем новый ответ
-
-        setcookie('poll_'. $poll_id, 'voted', time() + (86400 * 30), "/");
+        $count_array = get_post_meta( $post_id, 'count', true );
+        if(isset($count_array['$button'])){
+            $post++;
+        }else{
+            $post=1;
+        }
+        
+        //почему то в функции не складывалось(
+        update_post_meta( $poll_id, 'percents', $post);//записываем новый ответ
+        
+        setcookie('poll_'. $poll_id, 'voted', time() + (86400 * 30), '/');
         $change = poll_write_statistic ($poll_id, $button_id);
         return new WP_REST_Response ( $change, 200);//возвращаем массив измененых данных
     }
 
-    function poll_write_statistic ($poll_id, $button_id){// функция записывает статистику в поля
+    function poll_write_statistic($poll_id, $button_id){// функция записывает статистику в поля
         $total=poll_get_amount($poll_id);
         $arr = get_field('poll', $poll_id, true);
         $button = 0;
-        
         foreach ($arr as $key => $value) {
             if(!isset($value['number'])){
                 $value['number'] = 0;
@@ -77,25 +106,21 @@
             );
             $button++;
         }  
-
         return $settings;
     }
     
     function poll_get_amount($poll_id){//функция возвращает общее колличество ответов на ворпос
         $arr = get_field('poll', $poll_id, true);
         $total = 0;
-
         foreach ($arr as $key => $value) {
             $total = $total + $value['number'];//почему то $total+$value['number']; не сработал
         }
-    
         return $total;
     }
 
     function poll_get_color($param_name, $param_id){//функция создает фон кодируя имя ответа и возвращает первые 6 символов
         return $backgroundColor = '#' . substr(md5($param_id), 0, 3) . substr(md5($param_name), 0, 3);
     }
-
     add_action('rest_api_init', function(){
         register_rest_route( 'synagogues/v1/', '/poll', [
                 'methods' => 'POST',
