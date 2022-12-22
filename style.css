@@ -7,7 +7,22 @@
     box-shadow: 0px 0px 18px -7px rgb(73, 73, 73);
     border-radius: 8px;
 }
-.interview__window-title{
+.interview__item-voted {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 10px;
+    margin: 15px 0;
+    box-shadow: 0px 0px 18px -7px rgb(73, 73, 73);
+    border-radius: 8px;
+}
+.interview__item-voted .interview__statistic {
+    display: block;
+}
+.interview__item-voted .interview__window-button {
+    display: none;
+}
+.interview__window-title {
     font-size: 25px;
     color: #464141;
     margin: 0 0 15px;
@@ -25,20 +40,21 @@
     display: inline-flex;
 }
 .interview__statistic {
-    display: none;
     width: 100%;
 }
-
+.statistic__item__wrapper {
+    margin: 10px 0 0 0 ;
+    width: 100%;
+    border: 1px solid #000;
+}
 .interview__window-statistic {
-    display: inline-flex;
     width: 100%;
 }
 .statistic__item {
-    height: 30px;
-    border: 1px solid #000;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex: auto;
+    height: 17epx;
+    
 }
 .interview__statistic-view:hover {
     cursor: pointer;
