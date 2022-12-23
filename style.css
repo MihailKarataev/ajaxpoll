@@ -58,6 +58,7 @@
 .interview__statistic-view:hover {
     cursor: pointer;
 }
+
 .interview__statistic-view::after {
     content: '\142F';
 }

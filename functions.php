@@ -50,7 +50,6 @@
     
     }
 
-
     function is_passed($poll_id){ //функция проверяет пройден ли тест и возвращает стиль 
         $var = "poll_" . $poll_id;
         if(isset($_COOKIE[$var])){
@@ -72,7 +71,6 @@
         update_post_meta($poll_id, 'count', $arr);
         return $arr;
     }
-
 
     function synagogues_poll( WP_REST_Request $request ){//функция принимает и обрабатывает ajax запросы
         $button = $request->get_param('button_id');

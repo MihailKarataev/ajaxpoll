@@ -8,6 +8,7 @@
                 printf($format, get_poll_color($variant_name, $poll_id), $poll_id, get_sub_field('variant'),  get_sub_field('variant'));  
             endwhile;
         ?>
+        
     </div>
     <div  class="interview__statistic" id="interview__statistic_<?php echo $poll_id;?>" style="display:none;">
         <div class="interview__window-statistic">
