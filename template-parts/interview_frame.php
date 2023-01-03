@@ -17,6 +17,7 @@
                 while ( have_rows('poll') ) : the_row();
                     //тут создается массив с ответами
                     $count_array = is_empty_count(get_sub_field('variant'), $poll_id);
+                    $count_array = delete_empty($count_array);
                 endwhile;
 
                 while( have_rows('poll') ) : the_row();
@@ -28,8 +29,8 @@
                         }
                         $total += $value;
                     } 
-                    $count_arr = get_post_meta( $poll_id, 'count', true);
-                    $count_arr['set']['total'] = $total; 
+                    $count_array = get_post_meta( $poll_id, 'count', true);
+                    $count_array['set']['total'] = $total; 
                     
                     if($count_array[$variant_name] !== 0){ //если ответ никто не выбирал пропускаем рассчет и запишем 0%  
                         $percents = round(($count_array[$variant_name] / $total) * 100, 2) . "%";
@@ -37,7 +38,7 @@
                     }else{
                         $percents = "0%";
                     }
-                    update_post_meta($poll_id, 'count', $count_arr);
+                    update_post_meta($poll_id, 'count', $count_array);
                     $form = "<div class='statistic__item__wrapper'><div id=%s_%s style='width:%s; background:%s;' class='statistic__item' >%s-%s (%s)</div></div>";
                     printf($form, $poll_id, get_sub_field('variant'), $percents, '#378b38', get_sub_field('variant'), $percents , $count_array[$variant_name]);
                 endwhile;

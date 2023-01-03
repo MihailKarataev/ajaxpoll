@@ -48,6 +48,14 @@
         ] );
     
     }
+    function  delete_empty($arr){
+        foreach ($arr as $key => $value) {
+            if($key == ''){
+                unset($arr[$key]);
+            }
+        }
+        return $arr;
+    }
 
     function is_passed($poll_id){ //функция проверяет пройден ли тест и возвращает стиль 
         $var = "poll_" . $poll_id;
@@ -77,7 +85,7 @@
         $count_array = get_post_meta( $poll_id, 'count', true);
         $count_array[$button]++;
         update_post_meta($poll_id, 'count', $count_array);
-        setcookie('poll_'. $poll_id, 'voted', time() + (86400 * 30), '/');
+        //setcookie('poll_'. $poll_id, 'voted', time() + (86400 * 30), '/');
         return new WP_REST_Response ( $count_array, 200);//возвращаем массив измененых данных
     }
 
