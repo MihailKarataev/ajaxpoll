@@ -2,7 +2,6 @@
     add_action( 'init', 'register_post_types' );
 
     function register_post_types(){
-    
         register_post_type( 'poll', [
             'label'  => null,
             'labels' => [
@@ -35,7 +34,7 @@
             //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
             //'map_meta_cap'      => null, // Ставим true чтобы включить дефолтный обработчик специальных прав
             'hierarchical'        => false,
-            'supports'            => [ 'title' ], // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
+            'supports'            => [ 'title', 'page-attributes' ], // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
             'taxonomies'          => [],
             'has_archive'         => false,
             'rewrite'             => true,
@@ -60,9 +59,9 @@
         return $style;
     }
 
-    function is_empty_count($button, $poll_id){ //проверяю на наличие и создаю массив колличества УТОЧНИТЬ ЭТУ КАШУ!!!!!!!!!!!!!
+    function is_empty_count($button, $poll_id){ //проверяю на наличие и создаю массив колличества !!!!УТОЧНИТЬ ЭТУ КАШУ У ЖЕНИ!!!!!!!!!!!!!
         $arr = get_post_meta( $poll_id, 'count', true);
-        if($arr == ''){//если массив вообще пустой
+        if($arr == ''){//если массив вообще пустой 
             $arr = array($button => 0);
         }
         if(!isset($arr[$button])){
@@ -78,7 +77,7 @@
         $count_array = get_post_meta( $poll_id, 'count', true);
         $count_array[$button]++;
         update_post_meta($poll_id, 'count', $count_array);
-        //setcookie('poll_'. $poll_id, 'voted', time() + (86400 * 30), '/');
+        setcookie('poll_'. $poll_id, 'voted', time() + (86400 * 30), '/');
         return new WP_REST_Response ( $count_array, 200);//возвращаем массив измененых данных
     }
 
@@ -86,7 +85,7 @@
         return $backgroundColor = '#' . substr(md5($param_id), 0, 3) . substr(md5($param_name), 0, 3);
     }
 
-
+        //НЕ ЗНАЮ ГДЕ ПРАВИЛЬНЕЕ ПОДКЛЮЧАТЬ СЛЕДУЮЩИЕ ФУНКЦИИ РЕГИСТРАЦИЙ
     add_action('rest_api_init', function(){
         register_rest_route( 'synagogues/v1/', '/poll', [
                 'methods' => 'POST',
@@ -102,8 +101,8 @@
     
     add_action( 'wp_enqueue_scripts', 'my_scripts_method' );
     function my_scripts_method(){
-        wp_enqueue_script( 'cookie-script', get_template_directory_uri() . '/js/js.cookie.min.js');
         wp_enqueue_script( 'interview-script', get_template_directory_uri() . '/js/main.js');
+        wp_enqueue_script( 'diagram-script', get_template_directory_uri() . '/js/diagram.js');
     }
     
 
