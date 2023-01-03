@@ -21,7 +21,7 @@
                         if($key == "set"){
                             continue;
                         }
-                        echo "<div class='radial__item animate' style='--p:10;--c:lightgreen'> </div>";
+                        echo "<div class='radial__item animate' style='--p:50;--c:lightgreen'> </div>";
                       
                     }
                 ?>
