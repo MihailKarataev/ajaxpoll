@@ -46,6 +46,7 @@
     margin: 10px 0 0 0;
     width: 100%;
     border: 1px solid #000;
+
 }
 .interview__window-statistic {
     width: 100%;
@@ -54,11 +55,74 @@
     display: flex;
     flex: auto;
     height: 17px;
+    transition-timing-function: ease;
 }
 .interview__statistic-view:hover {
     cursor: pointer;
 }
-
 .interview__statistic-view::after {
     content: '\142F';
 }
+
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+@property --p{
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+  }
+  
+  .radial__item {
+    --p: 20;
+    --b: 22px;
+    --c: darkred;
+    --w: 150px;
+    
+    width: var(--w);
+    aspect-ratio: 1;
+    position:relative;
+    display: inline-grid;
+    margin: 5px;
+    place-content: enter;
+    font-size: 25px;
+    font-weight: bold;
+    font-family: sans-serif;
+  }
+  .radial__item:before,
+  .radial__item:after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+  }
+  .radial__item:before {
+    inset: 0;
+    background: 
+    radial-gradient(farthest-side,var(--c) 98%,#0000) top/var(--b) var(--b) no-repeat,
+    conic-gradient(var(--c) calc(var(--p)*1%),#0000 0);
+    -webkit-mask:radial-gradient(farthest-side,#0000 calc(99% - var(--b)),#000 calc(100% - var(--b)));
+    mask:radial-gradient(farthest-side,#0000 calc(99% - var(--b)),#000 calc(100% - var(--b)));
+  }
+  .radial__item:after {
+    inset: calc(50% - var(--b)/2);
+    background: var(--c);
+    transform: rotate(calc(var(--p)*3.6deg)) translateY(calc(50% - var(--w)/2));
+  }
+  .animate {
+    animation:p 1s .5s both;
+  }
+  .no-round:before {
+    background-size:0 0,auto;
+  }
+  .no-round:after {
+    content:none;
+  }
+  @keyframes p {
+    from{--p:0}
+  }
+  
+  
